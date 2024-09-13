@@ -1,47 +1,63 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+<!-- resources/views/auth/login.blade.php -->
+@extends('layouts.auth')
 
+@section('title', 'ログイン')
+
+@section('heading', 'アカウントにログイン')
+
+@section('subheading')
+    または
+    <a href="{{ route('register') }}" class="font-medium text-blue-500 hover:text-blue-500 focus:outline-none focus:underline transition ease-in-out duration-150">
+        新しいアカウントを作成
+    </a>
+@endsection
+
+@section('content')
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
-        <!-- Email Address -->
         <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <label for="email" class="block text-sm font-medium leading-5 text-gray-700">メールアドレス</label>
+            <div class="mt-1 relative rounded-md shadow-sm">
+                <input id="email" type="email" name="email" placeholder="user@example.com" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5 @error('email') border-red-500 @enderror" value="{{ old('email') }}">
+                @error('email')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        <div class="mt-6">
+            <label for="password" class="block text-sm font-medium leading-5 text-gray-700">パスワード</label>
+            <div class="mt-1 rounded-md shadow-sm">
+                <input id="password" type="password" name="password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5 @error('password') border-red-500 @enderror">
+                @error('password')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
         </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
+        <div class="mt-6 flex items-center justify-between">
+            <div class="flex items-center">
+                <input id="remember_me" type="checkbox" name="remember" class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out">
+                <label for="remember_me" class="ml-2 block text-sm leading-5 text-gray-900">ログイン情報を記憶</label>
+            </div>
+            <div class="text-sm leading-5">
+                <a href="{{ route('password.request') }}" class="font-medium text-blue-500 hover:text-blue-500 focus:outline-none focus:underline transition ease-in-out duration-150">
+                    パスワードを忘れた場合
                 </a>
-            @endif
+            </div>
+        </div>
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
+        <div class="mt-6">
+            <span class="block w-full rounded-md shadow-sm">
+                <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+                    サインイン
+                </button>
+            </span>
         </div>
     </form>
-</x-guest-layout>
+@endsection
+
+@php
+    $show_image = true;
+@endphp
